@@ -1,20 +1,26 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://ai.google.dev/static/site-assets/images/share-ais-513315318.png" />
-</div>
+# ARGUS
 
-# Run and deploy your AI Studio app
+### The Autonomous Eye for Hazardous Spaces
 
-This contains everything you need to run your app locally.
+ARGUS is an intelligent rover designed to remotely inspect and monitor hazardous environments, reducing the need to send people into potentially dangerous areas.
 
-View your app in AI Studio: https://ai.studio/apps/23f8f747-597f-40e4-be6f-832e2facedaf
+## What ARGUS Does
 
-## Run Locally
+- 🛞 **Remote Rover Control** — Forward, reverse, left, right & emergency stop
+- 📷 **Live Camera** — Front/rear camera monitoring
+- 🌡️ **Environmental Monitoring** — Gas, temperature & pressure
+- 🗺️ **Navigation** — GPS tracking and mission waypoints
+- 🧠 **AI Detection** — Intelligent visual/environmental detection
+- 📡 **Live Control Center** — Real-time rover status, telemetry and control
+- 🔌 **Rover Connection** — Connect a rover through its local IP address
 
-**Prerequisites:**  Node.js
+## How It Works
 
-
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+```text
+ARGUS Control Center
+        ↓
+ARGUS Backend
+        ↓
+ESP32 / Raspberry Pi / Cameras / Sensors
+        ↓
+Physical Rover
