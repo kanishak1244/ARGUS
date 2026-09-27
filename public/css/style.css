@@ -3163,6 +3163,310 @@ body.control-center-body,
   border-top-color: #323633;
 }
 
+/* ==========================================================================
+   MOBILE PORTRAIT & LANDSCAPE RESPONSIVE REDESIGN
+   Strictly scoped under <1024px to ensure DESKTOP/LAPTOP (>1023px) is UNTOUCHED
+   ========================================================================== */
+
+/* Touch Action Protection for Physical & On-Screen Controls */
+.dpad-btn, .cc-mode-btn, .cam-tab, .btn-add-rover, .btn-header-back {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* --------------------------------------------------------------------------
+   PORTRAIT MOBILE (< 900px Portrait) — Mobile Monitoring Interface
+   -------------------------------------------------------------------------- */
+@media (max-width: 899px) and (orientation: portrait) {
+  body {
+    overflow-x: hidden;
+  }
+
+  .cc-wrapper {
+    padding-left: max(12px, env(safe-area-inset-left));
+    padding-right: max(12px, env(safe-area-inset-right));
+    padding-top: max(8px, env(safe-area-inset-top));
+    padding-bottom: max(24px, env(safe-area-inset-bottom));
+  }
+
+  .site-header-dark .nav-container {
+    padding-left: max(12px, env(safe-area-inset-left));
+    padding-right: max(12px, env(safe-area-inset-right));
+    gap: 8px;
+  }
+
+  .header-brand-wrap {
+    gap: 6px;
+  }
+
+  .brand-tagline {
+    font-size: 0.6875rem;
+  }
+
+  .tagline-sub {
+    display: none;
+  }
+
+  .nav-actions {
+    gap: 6px;
+  }
+
+  .btn-header-back {
+    padding: 4px 8px;
+    font-size: 0.6875rem;
+    white-space: nowrap;
+  }
+
+  /* Top Telemetry Cards: 2-Column Grid */
+  .cc-top-metrics-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 8px !important;
+    margin-bottom: 12px !important;
+  }
+
+  .metric-card {
+    padding: 8px 10px !important;
+    gap: 4px !important;
+  }
+
+  .metric-label {
+    font-size: 0.625rem;
+  }
+
+  .metric-value {
+    font-size: 1.05rem;
+  }
+
+  .cc-top-metrics-grid > .metric-card:last-child {
+    grid-column: span 2;
+  }
+
+  /* Connection & Add Your Own Rover Bar */
+  .demo-compact-badge {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    padding: 8px 12px;
+  }
+
+  .demo-badge-left {
+    justify-content: flex-start;
+    font-size: 0.75rem;
+  }
+
+  .demo-badge-right {
+    width: 100%;
+  }
+
+  .btn-add-rover {
+    width: 100%;
+    justify-content: center;
+    padding: 6px 12px;
+    font-size: 0.8125rem;
+  }
+
+  /* Cockpit 2-Column Hero to 1-Column Stack */
+  .cc-hero-cockpit-2col {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px !important;
+    margin-bottom: 16px !important;
+  }
+
+  .cockpit-left-panel, .cockpit-right-panel {
+    width: 100%;
+  }
+
+  /* Camera Viewport */
+  .camera-stream-viewport {
+    height: 220px !important;
+  }
+
+  .camera-tab-bar {
+    display: flex;
+    width: 100%;
+  }
+
+  .cam-tab {
+    flex: 1;
+    text-align: center;
+    padding: 8px 4px;
+    font-size: 0.75rem;
+  }
+
+  /* Touch D-Pad Controls */
+  .dpad-container {
+    max-width: 280px;
+    margin: 8px auto 12px auto !important;
+    gap: 8px !important;
+  }
+
+  .dpad-btn {
+    min-height: 48px !important;
+    padding: 10px 4px !important;
+    font-size: 0.75rem !important;
+  }
+
+  .dpad-btn.stop-btn {
+    min-height: 52px !important;
+    font-size: 0.75rem !important;
+  }
+
+  .speed-control-group-compact {
+    padding: 10px 12px;
+  }
+
+  .speed-range-input {
+    height: 24px;
+  }
+
+  /* Secondary Systems Stacked 1-Column */
+  .cc-secondary-systems-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px !important;
+  }
+
+  .map-container-wrap {
+    height: 200px !important;
+  }
+
+  .event-log-box {
+    max-height: 240px;
+    overflow-y: auto;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   LANDSCAPE MOBILE (< 932px Landscape) — Compact Operator Cockpit Console
+   -------------------------------------------------------------------------- */
+@media (max-width: 932px) and (orientation: landscape) {
+  body {
+    overflow-x: hidden;
+  }
+
+  .site-header-dark {
+    padding-top: env(safe-area-inset-top);
+  }
+
+  .site-header-dark .nav-container {
+    padding: 4px 12px !important;
+    min-height: 42px !important;
+    height: 42px !important;
+  }
+
+  .brand-tagline {
+    display: none;
+  }
+
+  .btn-header-back {
+    padding: 3px 8px;
+    font-size: 0.6875rem;
+  }
+
+  .cc-wrapper {
+    padding-left: max(12px, env(safe-area-inset-left));
+    padding-right: max(12px, env(safe-area-inset-right));
+    padding-top: 6px !important;
+    padding-bottom: max(16px, env(safe-area-inset-bottom));
+  }
+
+  /* Ultra-Compact Metrics Bar on Top */
+  .cc-top-metrics-grid {
+    display: grid !important;
+    grid-template-columns: repeat(7, 1fr) !important;
+    gap: 4px !important;
+    margin-bottom: 8px !important;
+  }
+
+  .metric-card {
+    padding: 4px 6px !important;
+    gap: 2px !important;
+  }
+
+  .metric-label {
+    font-size: 0.55rem !important;
+  }
+
+  .metric-value {
+    font-size: 0.85rem !important;
+  }
+
+  .metric-sub, .metric-bar-wrap, .metric-chips-row {
+    display: none !important;
+  }
+
+  .demo-compact-badge {
+    padding: 4px 10px;
+    margin-bottom: 8px;
+    font-size: 0.75rem;
+  }
+
+  .btn-add-rover {
+    padding: 2px 8px;
+    font-size: 0.6875rem;
+  }
+
+  /* 2-Column Hero Cockpit Side-by-Side */
+  .cc-hero-cockpit-2col {
+    display: grid !important;
+    grid-template-columns: 1.15fr 1fr !important;
+    gap: 10px !important;
+    align-items: stretch !important;
+    margin-bottom: 12px !important;
+  }
+
+  .camera-stream-viewport {
+    height: 180px !important;
+  }
+
+  .dpad-container {
+    max-width: 240px;
+    margin: 4px auto 6px auto !important;
+    gap: 6px !important;
+  }
+
+  .dpad-btn {
+    min-height: 38px !important;
+    padding: 6px 4px !important;
+    font-size: 0.6875rem !important;
+  }
+
+  .dpad-btn.stop-btn {
+    min-height: 40px !important;
+    font-size: 0.6875rem !important;
+  }
+
+  .speed-control-group-compact {
+    padding: 6px 10px !important;
+    gap: 2px !important;
+  }
+
+  .keyboard-guide-line {
+    display: none;
+  }
+
+  .safety-card-compact {
+    padding: 6px 10px !important;
+  }
+
+  .gas-ppm-compact {
+    font-size: 1.1rem !important;
+  }
+
+  /* Secondary Diagnostics below Cockpit */
+  .cc-secondary-systems-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+  }
+
+  .map-container-wrap {
+    height: 160px !important;
+  }
+}
+
 
 
 
