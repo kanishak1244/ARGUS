@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ARGUS &bull; Deep Technical Architecture</title>
+  <meta name="description" content="Technical specifications and hardware architecture of the ARGUS autonomous hazard surveillance rover.">
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+
+  <!-- Sticky Top Navigation — Dark Industrial Header -->
+  <header class="site-header-dark navbar">
+    <div class="container nav-container">
+      <div class="header-brand-wrap">
+        <a href="/" class="brand-link" aria-label="ARGUS Rover Home">
+          <svg class="brand-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M3 12h3m12 0h3"></path>
+            <path d="M12 3v3m0 12v3"></path>
+            <rect x="5" y="8" width="14" height="8" rx="2"></rect>
+            <circle cx="8" cy="18" r="2"></circle>
+            <circle cx="16" cy="18" r="2"></circle>
+          </svg>
+          <span>ARGUS</span>
+        </a>
+        <span class="brand-divider"></span>
+        <span class="brand-tagline">The Autonomous Eye <span class="tagline-sub">For Hazardous Spaces</span></span>
+      </div>
+
+      <nav class="header-nav">
+        <ul class="nav-links" id="navLinks">
+          <li><a href="/" class="nav-link">Home</a></li>
+          <li><a href="/tech.html" class="nav-link active">Technology</a></li>
+          <li><a href="/about.html" class="nav-link">About</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="/control.html" class="btn-cc-header-btn">Control Center &rarr;</a>
+        <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation menu" aria-expanded="false">
+          <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Tech Header -->
+  <section class="section" style="padding-top: 72px;">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-label">System Architecture</span>
+        <h1 class="section-title">Engineered for Deterministic Reliability</h1>
+        <p class="section-subtitle">
+          ARGUS avoids single-point failures by decoupling high-level computer vision and web telemetry from the physical motor control and safety watchdog.
+        </p>
+      </div>
+
+      <!-- Core Hardware Tier Grid -->
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-bottom: 64px;">
+        <div class="cap-card">
+          <div style="display: flex; justify-content: space-between; align-items: baseline;">
+            <h3 style="color: var(--accent-blue); font-size: 1.25rem;">Tier 1: High-Level Brain (Raspberry Pi 5)</h3>
+            <span style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent-cyan);">Linux OS</span>
+          </div>
+          <p style="margin-top: 10px;">
+            Equipped with a quad-core 64-bit Arm Cortex-A76 processor running at 2.4GHz. The RPi 5 handles camera video pipeline ingestion, running YOLO edge inference models for obstacle and hazardous container tagging, and serving low-latency web streams over HTTP/WebSocket.
+          </p>
+          <ul style="margin-top: 14px; list-style: none; display: flex; flex-direction: column; gap: 6px; font-size: 0.8125rem; font-family: var(--font-mono); color: var(--text-muted);">
+            <li>&bull; Optical Input: Pi Camera 3 (Sony IMX708, HDR)</li>
+            <li>&bull; AI Pipeline: YOLOv8 Quantized Onnx / TFLite</li>
+            <li>&bull; Gas Interface: I2C connection to ADS1115 ADC</li>
+          </ul>
+        </div>
+
+        <div class="cap-card">
+          <div style="display: flex; justify-content: space-between; align-items: baseline;">
+            <h3 style="color: var(--accent-blue); font-size: 1.25rem;">Tier 2: Real-Time Core (ESP32 MCU)</h3>
+            <span style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--status-normal);">Bare-Metal Firmware</span>
+          </div>
+          <p style="margin-top: 10px;">
+            Dedicated dual-core 240MHz microcontroller with hardware timers. The ESP32 is completely insulated from Linux OS scheduling latency. It executes high-frequency PWM signal generation directly into the TB6612FNG motor driver and enforces hardware failsafes.
+          </p>
+          <ul style="margin-top: 14px; list-style: none; display: flex; flex-direction: column; gap: 6px; font-size: 0.8125rem; font-family: var(--font-mono); color: var(--text-muted);">
+            <li>&bull; Motor Driver: TB6612FNG Dual H-Bridge (1.2A continuous / 3.2A peak)</li>
+            <li>&bull; Watchdog Timer: 500ms heartbeat counter with auto-kill</li>
+            <li>&bull; Auxiliary Stream: Secondary ESP32-CAM standalone feed</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Signal Flow Schematics -->
+      <div class="section-header">
+        <span class="section-label">Communication & Control Flow</span>
+        <h2 class="section-title">Signal Propagation Pathways</h2>
+      </div>
+
+      <div class="arch-diagram-wrapper" style="margin-bottom: 64px;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+          <div style="background-color: var(--bg-surface-elevated); padding: 20px; border-radius: var(--radius-md); border: 1px solid var(--border-subtle);">
+            <div style="font-family: var(--font-display); font-weight: 600; color: #ffffff; margin-bottom: 8px;">Gas Sensor Signal Chain</div>
+            <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-secondary); line-height: 1.8;">
+              MQ Gas Probe &rarr; Analog Voltage (0&ndash;5V)<br>
+              &darr;<br>
+              ADS1115 (16-bit Delta-Sigma ADC @ 860 SPS)<br>
+              &darr;<br>
+              I2C Bus (0x48) &rarr; Raspberry Pi 5<br>
+              &darr;<br>
+              Safety Threshold Comparator (&gt;400 PPM)<br>
+              &darr;<br>
+              GPIO Inhibit Signal to ESP32 Firmware
+            </div>
+          </div>
+
+          <div style="background-color: var(--bg-surface-elevated); padding: 20px; border-radius: var(--radius-md); border: 1px solid var(--border-subtle);">
+            <div style="font-family: var(--font-display); font-weight: 600; color: #ffffff; margin-bottom: 8px;">Motor Teleoperation Chain</div>
+            <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-secondary); line-height: 1.8;">
+              Operator Browser (D-Pad / WASD / Speed Slider)<br>
+              &darr;<br>
+              WebSocket Command Packet &rarr; Wi-Fi Access Point<br>
+              &darr;<br>
+              ESP32 Watchdog Timer Reset (Heartbeat Acknowledged)<br>
+              &darr;<br>
+              Dual TB6612FNG H-Bridge Channels A & B<br>
+              &darr;<br>
+              4x Geared High-Torque DC Drive Motors
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- The 500ms Watchdog Deep Dive -->
+      <div class="failsafe-box" style="margin-bottom: 64px;">
+        <div>
+          <span class="section-label">Safety Protocol</span>
+          <h2 class="section-title">The 500ms Fail-Safe Watchdog</h2>
+          <p style="margin-bottom: 14px;">
+            In industrial environments, wireless signals can easily suffer multipath reflections, packet loss, or radio dead-zones caused by thick concrete walls and metal shelving.
+          </p>
+          <p>
+            Rather than buffering the last driving command and risking a runaway collision into a hazardous container, the ESP32 maintains an internal millisecond counter. If a fresh command packet is not acknowledged within <strong>500 ms</strong>, the firmware immediately sets all motor enable pins low and shorts the motor windings for dynamic braking.
+          </p>
+        </div>
+
+        <div style="background-color: var(--bg-surface-elevated); border: 1px solid var(--border-medium); border-radius: var(--radius-md); padding: 24px;">
+          <div style="font-family: var(--font-mono); font-size: 0.8125rem; color: var(--accent-cyan); margin-bottom: 12px;">Watchdog Pseudocode</div>
+          <pre style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-secondary); line-height: 1.6; overflow-x: auto;">
+void loop() {
+  if (millis() - lastPacketTime > 500) {
+    // 500ms signal timeout tripped!
+    brakeAllMotors();
+    failsafeStatus = FAILSAFE_ACTIVE;
+  } else if (gasPpm >= GAS_THRESHOLD) {
+    // Dangerous gas threshold tripped!
+    inhibitForwardDrive();
+  }
+}
+          </pre>
+        </div>
+      </div>
+
+      <!-- Action Button -->
+      <div style="text-align: center;">
+        <a href="/control.html" class="btn btn-primary btn-lg">Test In Rover Control Center &rarr;</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Redesigned Premium Dark Industrial Footer -->
+  <footer class="site-footer-dark">
+    <div class="container">
+      <div class="footer-dark-grid">
+        
+        <!-- Column 1: Brand & Socials -->
+        <div class="footer-dark-col brand-col">
+          <div class="footer-brand-title">ARGUS</div>
+          <div class="footer-brand-tagline">The Autonomous Eye For Hazardous Spaces</div>
+          <p class="footer-brand-desc">
+            Robotic intelligence for a safer, more resilient world. Engineered to safeguard human personnel in high-risk industrial facilities.
+          </p>
+          <div class="footer-social-links">
+            <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="social-icon-btn" aria-label="GitHub">
+              <svg viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+            </a>
+            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="social-icon-btn" aria-label="LinkedIn">
+              <svg viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+            </a>
+            <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" class="social-icon-btn" aria-label="YouTube">
+              <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+            </a>
+            <a href="https://x.com" target="_blank" rel="noopener noreferrer" class="social-icon-btn" aria-label="X">
+              <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Column 2: Quick Links -->
+        <div class="footer-dark-col">
+          <div class="footer-col-title">Quick Links</div>
+          <ul class="footer-dark-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/tech.html">Technology</a></li>
+            <li><a href="/about.html">About</a></li>
+            <li><a href="/control.html">Control Center</a></li>
+            <li><a href="/about.html#contact">Contact</a></li>
+          </ul>
+        </div>
+
+        <!-- Column 3: Solutions -->
+        <div class="footer-dark-col solutions-col">
+          <div class="footer-col-title">Solutions</div>
+          <ul class="footer-dark-links">
+            <li><a href="/tech.html">Hazardous Environment</a></li>
+            <li><a href="/index.html#how-it-works">Industrial Inspection</a></li>
+            <li><a href="/about.html">Search & Rescue</a></li>
+            <li><a href="/tech.html">Remote Exploration</a></li>
+          </ul>
+        </div>
+
+        <!-- Column 4: Resources -->
+        <div class="footer-dark-col">
+          <div class="footer-col-title">Resources</div>
+          <ul class="footer-dark-links">
+            <li><a href="/tech.html">Documentation</a></li>
+            <li><a href="/about.html">Case Studies</a></li>
+            <li><a href="/tech.html">Technology</a></li>
+            <li><a href="/about.html#contact">Contact</a></li>
+          </ul>
+        </div>
+
+        <!-- Column 5: Stay Updated -->
+        <div class="footer-dark-col">
+          <div class="footer-col-title">Stay Updated</div>
+          <p class="footer-subscribe-desc">
+            Follow ARGUS as we build safer ways to operate in hazardous environments.
+          </p>
+          <form class="footer-subscribe-form" onsubmit="event.preventDefault(); alert('Thank you for subscribing to ARGUS updates!');">
+            <input type="email" class="footer-email-input" placeholder="Enter your email" required aria-label="Email address for updates">
+            <button type="submit" class="footer-subscribe-btn" aria-label="Subscribe">&rarr;</button>
+          </form>
+        </div>
+
+      </div>
+
+      <!-- Bottom Bar -->
+      <div class="footer-dark-bottom">
+        <div>&copy; 2026 ARGUS Robotics &bull; Smart India Hackathon. All rights reserved.</div>
+        <div class="footer-bottom-links">
+          <a href="/about.html">Privacy Policy</a>
+          <span>&bull;</span>
+          <a href="/about.html">Terms of Use</a>
+          <span>&bull;</span>
+          <a href="/about.html#contact">Contact Support</a>
+        </div>
+      </div>
+
+    </div>
+  </footer>
+
+  <script type="module" src="./js/main.js"></script>
+</body>
+</html>

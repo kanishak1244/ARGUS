@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ARGUS | Autonomous Surveillance & Hazard Rover</title>
+  <meta name="description" content="AI-powered autonomous surveillance and hazard-monitoring rover for warehouses, factories, chemical facilities, and industrial environments.">
+  <meta property="og:title" content="ARGUS | Autonomous Surveillance & Hazard Rover">
+  <meta property="og:description" content="An AI-powered rover that monitors hazardous environments without putting humans directly in harm's way.">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+
+  <!-- Sticky Top Navigation — Dark Industrial Header -->
+  <header class="site-header-dark navbar">
+    <div class="container nav-container">
+      <div class="header-brand-wrap">
+        <a href="/" class="brand-link" aria-label="ARGUS Rover Home">
+          <svg class="brand-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M3 12h3m12 0h3"></path>
+            <path d="M12 3v3m0 12v3"></path>
+            <rect x="5" y="8" width="14" height="8" rx="2"></rect>
+            <circle cx="8" cy="18" r="2"></circle>
+            <circle cx="16" cy="18" r="2"></circle>
+          </svg>
+          <span>ARGUS</span>
+        </a>
+        <span class="brand-divider"></span>
+        <span class="brand-tagline">The Autonomous Eye <span class="tagline-sub">For Hazardous Spaces</span></span>
+      </div>
+
+      <nav class="header-nav">
+        <ul class="nav-links" id="navLinks">
+          <li><a href="/" class="nav-link active">Home</a></li>
+          <li><a href="/tech.html" class="nav-link">Technology</a></li>
+          <li><a href="/about.html" class="nav-link">About</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="/control.html" class="btn-cc-header-btn">Control Center &rarr;</a>
+        <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation menu" aria-expanded="false">
+          <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- 01 — HERO SECTION -->
+  <section class="section section-white hero-section">
+    <!-- Desktop Integrated Background Rover Photograph -->
+    <div class="hero-bg-photo-wrap" aria-hidden="true">
+      <img 
+        src="/assets/argus-rover.jpg" 
+        alt="ARGUS Autonomous Rover Physical Hardware Prototype" 
+        class="hero-bg-photo" 
+        loading="eager" 
+      />
+    </div>
+
+    <div class="container hero-container">
+      <div class="hero-content">
+        <div class="hero-badge-row">
+          <span class="dot"></span>
+          <span>Autonomous Hardware &bull; Physical Robotics</span>
+        </div>
+        
+        <h1 class="hero-title">ARGUS</h1>
+        <div class="hero-tagline">THE AUTONOMOUS EYE FOR HAZARDOUS SPACES.</div>
+        
+        <p class="hero-description">
+          An AI-powered rover that sees, senses and monitors hazardous environments &mdash; giving operators information before a person has to enter.
+        </p>
+
+        <div class="hero-actions">
+          <a href="#problem" class="btn btn-secondary btn-lg">Explore ARGUS</a>
+          <a href="/control.html" class="btn btn-primary btn-lg">Open Control Center &rarr;</a>
+        </div>
+
+        <!-- Mobile Integrated Product Visual -->
+        <div class="hero-mobile-photo-wrap">
+          <img 
+            src="/assets/argus-rover.jpg" 
+            alt="ARGUS Autonomous Rover Physical Hardware Prototype" 
+            class="hero-mobile-photo" 
+            loading="eager" 
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Engineering Specification Feature Ruler Ticker -->
+  <section class="engineering-ruler-section" aria-label="ARGUS Technical Features Ticker">
+    <div class="ruler-viewport">
+      <div class="ruler-track">
+        <!-- Sequence 1 -->
+        <div class="ruler-item">
+          <span class="ruler-tag">ARGUS</span>
+          <span class="ruler-title">AI Vision</span>
+          <span class="ruler-divider"></span>
+        </div>
+        <div class="ruler-item">
+          <span class="ruler-title">Gas Monitoring</span>
+          <span class="ruler-divider"></span>
+        </div>
+        <div class="ruler-item">
+          <span class="ruler-title">Dual Camera</span>
+          <span class="ruler-divider"></span>
+        </div>
+        <div class="ruler-item">
+          <span class="ruler-title">Remote Control</span>
+          <span class="ruler-divider"></span>
+        </div>
+        <div class="ruler-item">
+          <span class="ruler-title">Obstacle Detection</span>
+          <span class="ruler-divider"></span>
+        </div>
+        <div class="ruler-item">
+          <span class="ruler-title">Hazard Monitoring</span>
+          <span class="ruler-divider"></span>
+        </div>
+
+        <!-- Sequence 2 (Duplicated for Infinite Loop) -->
+        <div class="ruler-item">
+          <span class="ruler-tag">ARGUS</span>
+          <span class="ruler-title">AI Vision</span>
+          <span class="ruler-divider"></span>
+        </div>
+        <div class="ruler-item">
+          <span class="ruler-title">Gas Monitoring</span>
+          <span class="ruler-divider"></span>
+        </div>
+        <div class="ruler-item">
+          <span class="ruler-title">Dual Camera</span>
+          <span class="ruler-divider"></span>
+        </div>
+        <div class="ruler-item">
+          <span class="ruler-title">Remote Control</span>
+          <span class="ruler-divider"></span>
+        </div>
+        <div class="ruler-item">
+          <span class="ruler-title">Obstacle Detection</span>
+          <span class="ruler-divider"></span>
+        </div>
+        <div class="ruler-item">
+          <span class="ruler-title">Hazard Monitoring</span>
+          <span class="ruler-divider"></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 — THE PROBLEM -->
+  <section class="section section-stone" id="problem">
+    <div class="container">
+      <div class="section-header" style="max-width: 860px; margin-bottom: 0;">
+        <span class="section-label">The Problem</span>
+        <h2 class="section-title" style="font-size: clamp(2.25rem, 4.5vw, 3.5rem); margin-bottom: 24px;">
+          When the environment is dangerous, distance matters.
+        </h2>
+        <p class="section-subtitle" style="font-size: 1.25rem; line-height: 1.7; max-width: 72ch;">
+          Many industrial facilities require workers to inspect spaces where gas leaks, chemical spills or unknown structural hazards may be present. Sending a human inside without prior visual and sensor intelligence creates unnecessary physical risk.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 — BEFORE ARGUS / WITH ARGUS -->
+  <section class="section section-stone" id="difference">
+    <div class="container">
+      <div class="section-header" style="text-align: center; max-width: 800px; margin-left: auto; margin-right: auto;">
+        <span class="section-label">THE DIFFERENCE ARGUS CREATES</span>
+        <h2 class="section-title">FROM ENTERING THE HAZARD TO SEEING IT FROM A DISTANCE.</h2>
+        <p class="section-subtitle">
+          ARGUS changes how hazardous environments are inspected &mdash; giving operators visibility and information before they have to send a person inside.
+        </p>
+      </div>
+
+      <!-- Horizontal Editorial Comparison Block -->
+      <div class="diff-comparison-wrap">
+        
+        <!-- Left: 01 / BEFORE ARGUS -->
+        <div class="diff-side diff-side-before">
+          <div class="diff-side-header">
+            <span class="diff-label">01 / Before ARGUS</span>
+            <h3 class="diff-headline">Send a person in.</h3>
+          </div>
+
+          <div class="diff-visual-frame">
+            <img 
+              src="/assets/manual-inspection-before.jpg" 
+              alt="Traditional Manual Facility Inspection" 
+              class="diff-visual-img"
+              loading="lazy"
+            />
+          </div>
+
+          <!-- Story Workflow Flow -->
+          <div class="diff-flow-bar">
+            <span class="diff-flow-step">Person</span>
+            <span class="diff-flow-arrow">&rarr;</span>
+            <span class="diff-flow-step">Hazardous area</span>
+            <span class="diff-flow-arrow">&rarr;</span>
+            <span class="diff-flow-step">Manual inspection</span>
+          </div>
+
+          <!-- Supporting Points List -->
+          <ul class="diff-points-list">
+            <li>
+              <strong>Manual inspection</strong>
+              <span>Visual check requires physical entry into unknown areas.</span>
+            </li>
+            <li>
+              <strong>Limited visibility</strong>
+              <span>No real-time sensor array or camera stream prior to entry.</span>
+            </li>
+            <li>
+              <strong>Direct exposure</strong>
+              <span>Personnel exposed to potential toxic gas or structural risks.</span>
+            </li>
+            <li>
+              <strong>Slower information</strong>
+              <span>Data gathered only after someone travels inside the facility.</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Center Thin Divider -->
+        <div class="diff-divider">
+          <span class="diff-divider-line"></span>
+          <div class="diff-divider-badge">
+            <span>Without ARGUS</span>
+            <span class="divider-arrow">&rarr;</span>
+            <span>With ARGUS</span>
+          </div>
+          <span class="diff-divider-line"></span>
+        </div>
+
+        <!-- Right: 02 / WITH ARGUS -->
+        <div class="diff-side diff-side-with">
+          <div class="diff-side-header">
+            <span class="diff-label diff-label-argus">02 / With ARGUS</span>
+            <h3 class="diff-headline">See before you enter.</h3>
+          </div>
+
+          <div class="diff-visual-frame">
+            <img 
+              src="/assets/argus-warehouse-operating.jpg" 
+              alt="ARGUS Autonomous Rover Operating in Industrial Facility Corridor" 
+              class="diff-visual-img"
+              loading="lazy"
+            />
+          </div>
+
+          <!-- Story Workflow Flow -->
+          <div class="diff-flow-bar diff-flow-bar-argus">
+            <span class="diff-flow-step">ARGUS Rover</span>
+            <span class="diff-flow-arrow">&rarr;</span>
+            <span class="diff-flow-step">Camera + Sensors</span>
+            <span class="diff-flow-arrow">&rarr;</span>
+            <span class="diff-flow-step">AI Perception</span>
+            <span class="diff-flow-arrow">&rarr;</span>
+            <span class="diff-flow-step">Operator</span>
+          </div>
+
+          <!-- Supporting Points List -->
+          <ul class="diff-points-list">
+            <li>
+              <strong>Remote visual inspection</strong>
+              <span>Live optical stream sent directly to the operator station.</span>
+            </li>
+            <li>
+              <strong>AI-assisted perception</strong>
+              <span>Real-time YOLO object detection identifying hazards.</span>
+            </li>
+            <li>
+              <strong>Gas / hazard monitoring</strong>
+              <span>Environmental sensing performed before human entry.</span>
+            </li>
+            <li>
+              <strong>Real-time information</strong>
+              <span>Zero-delay telemetry keeps operators informed at a distance.</span>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+
+      <!-- Section End Result Statement -->
+      <div class="diff-result-banner">
+        <span class="diff-result-label">The Result</span>
+        <h3 class="diff-result-title">
+          Keep people out of the hazard.<br>
+          Bring the information to them.
+        </h3>
+        <p class="diff-result-subtitle">
+          Remote visibility. Intelligent perception. Safer inspection.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 04 — HOW ARGUS WORKS -->
+  <section class="section section-charcoal" id="how-it-works">
+    <div class="container">
+      <div class="section-header" style="max-width: 800px;">
+        <span class="section-label">How ARGUS Works</span>
+        <h2 class="section-title">Remotely operated. Real-time intelligence.</h2>
+        <p class="section-subtitle">
+          A simple 5-step engineering process from deployment to operator decision.
+        </p>
+      </div>
+
+      <!-- Horizontal Engineering Flow Diagram -->
+      <div class="eng-flow-container">
+        
+        <div class="eng-flow-step">
+          <span class="eng-flow-step-num">01 Move</span>
+          <h3 class="eng-flow-step-title">Move</h3>
+          <p class="eng-flow-step-desc">Rover enters the hazardous area under wireless teleoperation.</p>
+        </div>
+
+        <div class="eng-flow-arrow">&rarr;</div>
+
+        <div class="eng-flow-step">
+          <span class="eng-flow-step-num">02 See</span>
+          <h3 class="eng-flow-step-title">See</h3>
+          <p class="eng-flow-step-desc">Dual onboard cameras capture real-world optical feeds.</p>
+        </div>
+
+        <div class="eng-flow-arrow">&rarr;</div>
+
+        <div class="eng-flow-step">
+          <span class="eng-flow-step-num">03 Sense</span>
+          <h3 class="eng-flow-step-title">Sense</h3>
+          <p class="eng-flow-step-desc">Sensors collect ambient air quality and environmental data.</p>
+        </div>
+
+        <div class="eng-flow-arrow">&rarr;</div>
+
+        <div class="eng-flow-step">
+          <span class="eng-flow-step-num">04 Understand</span>
+          <h3 class="eng-flow-step-title">Understand</h3>
+          <p class="eng-flow-step-desc">AI perception assists with real-time hazard identification.</p>
+        </div>
+
+        <div class="eng-flow-arrow">&rarr;</div>
+
+        <div class="eng-flow-step">
+          <span class="eng-flow-step-num">05 Report</span>
+          <h3 class="eng-flow-step-title">Report</h3>
+          <p class="eng-flow-step-desc">Live telemetry and vision streams reach the operator station.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 — WHAT ARGUS SEES -->
+  <section class="section section-stone" id="preview">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-label">Dual-Stream Perception</span>
+        <h2 class="section-title">See what ARGUS sees.</h2>
+        <p class="section-subtitle">One camera shows the raw environment. The other adds real-time AI-based understanding.</p>
+      </div>
+
+      <div class="preview-cards-grid">
+        <!-- Normal Camera Card -->
+        <div class="preview-card">
+          <div class="preview-card-header">
+            <div class="preview-label-group">
+              <span class="feed-indicator"></span>
+              <span class="preview-title">Normal Vision</span>
+            </div>
+            <span class="preview-meta">Optical Feed &bull; Raw</span>
+          </div>
+          <div class="preview-screen">
+            <canvas id="normalFeedCanvas" class="simulated-feed-canvas"></canvas>
+          </div>
+          <div class="preview-card-footer">
+            Live forward optical camera stream from the physical rover.
+          </div>
+        </div>
+
+        <!-- AI Vision Card -->
+        <div class="preview-card">
+          <div class="preview-card-header">
+            <div class="preview-label-group">
+              <span class="feed-indicator" style="background-color: var(--accent-gold);"></span>
+              <span class="preview-title">AI Vision</span>
+            </div>
+            <span class="preview-meta">YOLOv8 &bull; Computer Vision</span>
+          </div>
+          <div class="preview-screen">
+            <canvas id="aiFeedCanvas" class="simulated-feed-canvas"></canvas>
+          </div>
+          <div class="preview-card-footer">
+            Real-time computer vision identifying objects and environmental obstacles.
+          </div>
+        </div>
+      </div>
+
+      <div class="preview-cta-center">
+        <a href="/control.html" class="btn btn-primary btn-lg">Open Control Center &rarr;</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 — THE HARDWARE -->
+  <section class="section section-stone-dark" id="hardware">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-label">The Hardware</span>
+        <h2 class="section-title">Physical reconnaissance platform.</h2>
+        <p class="section-subtitle">Built for mobility, sensing, and edge processing in volatile facility conditions.</p>
+      </div>
+
+      <div class="hardware-showcase">
+        <!-- Main Real Rover Photograph Frame -->
+        <div class="hardware-main-frame">
+          <img 
+            src="/assets/argus-rover.jpg" 
+            alt="ARGUS Autonomous Rover Hardware Unit" 
+            class="hardware-main-img" 
+            loading="lazy" 
+          />
+
+          <!-- Clean Hardware Callout Cards -->
+          <div class="hardware-callouts-grid">
+            <div class="hardware-callout-card">
+              <div class="hardware-callout-title">ESP32-CAM</div>
+              <div class="hardware-callout-desc">Forward visual stream</div>
+            </div>
+
+            <div class="hardware-callout-card">
+              <div class="hardware-callout-title">Ultrasonic Sensor</div>
+              <div class="hardware-callout-desc">Distance sensing & obstacles</div>
+            </div>
+
+            <div class="hardware-callout-card">
+              <div class="hardware-callout-title">Gas Sensor</div>
+              <div class="hardware-callout-desc">Environmental vapor sampling</div>
+            </div>
+
+            <div class="hardware-callout-card">
+              <div class="hardware-callout-title">Drive Motors</div>
+              <div class="hardware-callout-desc">4-wheel differential mobility</div>
+            </div>
+
+            <div class="hardware-callout-card">
+              <div class="hardware-callout-title">Control Electronics</div>
+              <div class="hardware-callout-desc">Rover control & power system</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hardware Specification Strip -->
+        <div class="hardware-spec-strip">
+          <div class="hardware-spec-item">
+            <span class="hardware-spec-dot"></span>
+            <span>4-Wheel Drive</span>
+          </div>
+          <div class="hardware-spec-item">
+            <span class="hardware-spec-dot"></span>
+            <span>Dual Camera</span>
+          </div>
+          <div class="hardware-spec-item">
+            <span class="hardware-spec-dot"></span>
+            <span>Remote Operation</span>
+          </div>
+          <div class="hardware-spec-item">
+            <span class="hardware-spec-dot"></span>
+            <span>AI Perception</span>
+          </div>
+          <div class="hardware-spec-item">
+            <span class="hardware-spec-dot"></span>
+            <span>Environmental Sensing</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- 07 — CONTROL CENTER CTA -->
+  <section class="section section-charcoal" id="control-cta">
+    <div class="container">
+      <div style="text-align: center; max-width: 720px; margin: 0 auto;">
+        <span class="section-label">Operator Station</span>
+        <h2 style="font-size: clamp(2.25rem, 4.5vw, 3.5rem); font-family: var(--font-display); color: #FAF9F6; margin-bottom: 16px; letter-spacing: -0.02em;">
+          The operator stays back.
+        </h2>
+        <p style="font-size: 1.125rem; color: #A4A7A0; margin-bottom: 32px; max-width: 56ch; margin-left: auto; margin-right: auto; line-height: 1.6;">
+          Monitor the rover, view its camera feed and interact with the system from the operator station.
+        </p>
+        <a href="/control.html" class="btn btn-black-primary btn-lg">
+          Open Control Center &rarr;
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 08 — FINAL STATEMENT & FOOTER -->
+  <section class="section section-stone" id="final-statement" style="text-align: center; border-top: 1px solid var(--border);">
+    <div class="container" style="max-width: 800px;">
+      <h2 class="section-title" style="font-size: clamp(2.5rem, 5.5vw, 4.25rem); line-height: 1.08; margin-bottom: 20px; letter-spacing: -0.03em;">
+        See the hazard.<br>Before you enter.
+      </h2>
+      <p class="section-subtitle" style="font-size: 1.125rem; margin: 0 auto 36px auto; max-width: 58ch;">
+        ARGUS brings visual and environmental information to the operator before direct entry is required.
+      </p>
+      <div>
+        <a href="/control.html" class="btn btn-primary btn-lg">Open Control Center &rarr;</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Redesigned Premium Dark Industrial Footer -->
+  <footer class="site-footer-dark">
+    <div class="container">
+      <div class="footer-dark-grid">
+        
+        <!-- Column 1: Brand & Socials -->
+        <div class="footer-dark-col brand-col">
+          <div class="footer-brand-title">ARGUS</div>
+          <div class="footer-brand-tagline">The Autonomous Eye For Hazardous Spaces</div>
+          <p class="footer-brand-desc">
+            Robotic intelligence for a safer, more resilient world. Engineered to safeguard human personnel in high-risk industrial facilities.
+          </p>
+          <div class="footer-social-links">
+            <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="social-icon-btn" aria-label="GitHub">
+              <svg viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+            </a>
+            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="social-icon-btn" aria-label="LinkedIn">
+              <svg viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+            </a>
+            <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" class="social-icon-btn" aria-label="YouTube">
+              <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+            </a>
+            <a href="https://x.com" target="_blank" rel="noopener noreferrer" class="social-icon-btn" aria-label="X">
+              <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Column 2: Quick Links -->
+        <div class="footer-dark-col">
+          <div class="footer-col-title">Quick Links</div>
+          <ul class="footer-dark-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/tech.html">Technology</a></li>
+            <li><a href="/about.html">About</a></li>
+            <li><a href="/control.html">Control Center</a></li>
+            <li><a href="/about.html#contact">Contact</a></li>
+          </ul>
+        </div>
+
+        <!-- Column 3: Solutions -->
+        <div class="footer-dark-col solutions-col">
+          <div class="footer-col-title">Solutions</div>
+          <ul class="footer-dark-links">
+            <li><a href="/tech.html">Hazardous Environment</a></li>
+            <li><a href="/index.html#how-it-works">Industrial Inspection</a></li>
+            <li><a href="/about.html">Search & Rescue</a></li>
+            <li><a href="/tech.html">Remote Exploration</a></li>
+          </ul>
+        </div>
+
+        <!-- Column 4: Resources -->
+        <div class="footer-dark-col">
+          <div class="footer-col-title">Resources</div>
+          <ul class="footer-dark-links">
+            <li><a href="/tech.html">Documentation</a></li>
+            <li><a href="/about.html">Case Studies</a></li>
+            <li><a href="/tech.html">Technology</a></li>
+            <li><a href="/about.html#contact">Contact</a></li>
+          </ul>
+        </div>
+
+        <!-- Column 5: Stay Updated -->
+        <div class="footer-dark-col">
+          <div class="footer-col-title">Stay Updated</div>
+          <p class="footer-subscribe-desc">
+            Follow ARGUS as we build safer ways to operate in hazardous environments.
+          </p>
+          <form class="footer-subscribe-form" onsubmit="event.preventDefault(); alert('Thank you for subscribing to ARGUS updates!');">
+            <input type="email" class="footer-email-input" placeholder="Enter your email" required aria-label="Email address for updates">
+            <button type="submit" class="footer-subscribe-btn" aria-label="Subscribe">&rarr;</button>
+          </form>
+        </div>
+
+      </div>
+
+      <!-- Bottom Bar -->
+      <div class="footer-dark-bottom">
+        <div>&copy; 2026 ARGUS Robotics &bull; Smart India Hackathon. All rights reserved.</div>
+        <div class="footer-bottom-links">
+          <a href="/about.html">Privacy Policy</a>
+          <span>&bull;</span>
+          <a href="/about.html">Terms of Use</a>
+          <span>&bull;</span>
+          <a href="/about.html#contact">Contact Support</a>
+        </div>
+      </div>
+
+    </div>
+  </footer>
+
+  <script type="module" src="./js/main.js"></script>
+</body>
+</html>

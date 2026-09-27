@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ARGUS &bull; Rover Control Center</title>
+  <meta name="description" content="Live teleoperation, sensor telemetry, and computer vision command center for the ARGUS hazard surveillance rover.">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+
+  <!-- Sticky Top Navigation — Dark Industrial Header -->
+  <header class="site-header-dark navbar">
+    <div class="container nav-container">
+      <div class="header-brand-wrap">
+        <a href="/" class="brand-link" aria-label="ARGUS Rover Home">
+          <svg class="brand-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M3 12h3m12 0h3"></path>
+            <path d="M12 3v3m0 12v3"></path>
+            <rect x="5" y="8" width="14" height="8" rx="2"></rect>
+            <circle cx="8" cy="18" r="2"></circle>
+            <circle cx="16" cy="18" r="2"></circle>
+          </svg>
+          <span>ARGUS</span>
+        </a>
+        <span class="brand-divider"></span>
+        <span class="brand-tagline">The Autonomous Eye <span class="tagline-sub">For Hazardous Spaces</span></span>
+      </div>
+
+      <div class="nav-actions">
+        <a href="/" class="btn-header-back">&larr; Back to website</a>
+        <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation menu" aria-expanded="false">
+          <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container cc-wrapper">
+    
+    <!-- Top Compact Status Cards Strip (7 Essential Metrics) -->
+    <div class="cc-top-metrics-grid">
+      <!-- 1. Battery -->
+      <div class="metric-card">
+        <div class="metric-header">
+          <span class="metric-label">Battery</span>
+          <svg class="metric-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="2" y="7" width="16" height="10" rx="2"></rect>
+            <line x1="22" y1="11" x2="22" y2="13"></line>
+            <line x1="6" y1="10" x2="6" y2="14" stroke-linecap="round"></line>
+            <line x1="10" y1="10" x2="10" y2="14" stroke-linecap="round"></line>
+          </svg>
+        </div>
+        <div class="metric-value-row">
+          <span class="metric-value">88%</span>
+          <span class="metric-sub">2h 45m</span>
+        </div>
+        <div class="metric-bar-wrap">
+          <div class="metric-bar" style="width: 88%; background-color: var(--status-normal);"></div>
+        </div>
+      </div>
+
+      <!-- 2. Connection -->
+      <div class="metric-card">
+        <div class="metric-header">
+          <span class="metric-label">Connection</span>
+          <span id="robotStatusDot" class="status-dot online"></span>
+        </div>
+        <div class="metric-value-row">
+          <strong id="robotStatusText" class="metric-value" style="font-size: 1.05rem;">Online</strong>
+          <span class="metric-sub">12ms</span>
+        </div>
+        <div class="metric-chips-row">
+          <span class="chip-dot-item"><span id="esp32StatusDot" class="status-dot online"></span> ESP32</span>
+          <span class="chip-dot-item"><span id="esp32CamStatusDot" class="status-dot online"></span> CAM</span>
+          <span class="chip-dot-item"><span id="piStatusDot" class="status-dot online"></span> PI 5</span>
+        </div>
+      </div>
+
+      <!-- 3. Operation Mode -->
+      <div class="metric-card">
+        <div class="metric-header">
+          <span class="metric-label">Mode</span>
+          <svg class="metric-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+          </svg>
+        </div>
+        <div class="cc-mode-switch" style="margin-top: 4px;">
+          <button id="modeManualBtn" class="cc-mode-btn active" type="button">Manual</button>
+          <button id="modeAutoBtn" class="cc-mode-btn" type="button">Autonomous</button>
+        </div>
+      </div>
+
+      <!-- 4. Speed -->
+      <div class="metric-card">
+        <div class="metric-header">
+          <span class="metric-label">Speed</span>
+          <svg class="metric-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"></path>
+          </svg>
+        </div>
+        <div class="metric-value-row">
+          <span class="metric-value"><strong id="speedValueTop">180</strong> PWM</span>
+          <span class="metric-sub">~1.2 m/s</span>
+        </div>
+        <div class="metric-bar-wrap">
+          <div class="metric-bar" style="width: 70%; background-color: var(--accent-gold);"></div>
+        </div>
+      </div>
+
+      <!-- 5. Temperature -->
+      <div class="metric-card">
+        <div class="metric-header">
+          <span class="metric-label">Temperature</span>
+          <svg class="metric-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"></path>
+          </svg>
+        </div>
+        <div class="metric-value-row">
+          <span class="metric-value">34&deg;C</span>
+          <span class="metric-sub">Optimal</span>
+        </div>
+        <div class="metric-bar-wrap">
+          <div class="metric-bar" style="width: 34%; background-color: var(--status-normal);"></div>
+        </div>
+      </div>
+
+      <!-- 6. Pressure -->
+      <div class="metric-card">
+        <div class="metric-header">
+          <span class="metric-label">Pressure</span>
+          <svg class="metric-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="9"></circle>
+            <path d="M12 12l3-3"></path>
+            <path d="M9 16a4 4 0 0 1 0-5.66"></path>
+          </svg>
+        </div>
+        <div class="metric-value-row">
+          <span class="metric-value"><strong id="pressureValueTop">101.3</strong> kPa</span>
+          <span id="pressureStatusSub" class="metric-sub">Normal</span>
+        </div>
+        <div class="metric-bar-wrap">
+          <div class="metric-bar" id="pressureBar" style="width: 50%; background-color: var(--status-normal);"></div>
+        </div>
+      </div>
+
+      <!-- 7. System Health -->
+      <div class="metric-card">
+        <div class="metric-header">
+          <span class="metric-label">System Health</span>
+          <svg class="metric-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+          </svg>
+        </div>
+        <div class="metric-value-row">
+          <span class="metric-value" style="color: var(--status-normal);">Healthy</span>
+          <span class="metric-sub">0 Warn</span>
+        </div>
+        <div class="metric-chips-row">
+          <span class="chip-tag-ok">Watchdog OK</span>
+          <span class="chip-tag-ok">Sensors OK</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dynamic Connection & Demo Mode Bar -->
+    <div id="demoModeBanner" class="demo-compact-badge" style="margin-bottom: 10px;">
+      <div class="demo-badge-left">
+        <span id="demoBadgeDot" class="badge-dot demo"></span>
+        <span id="demoBadgeText">Demo Mode &bull; Simulated Data Active</span>
+      </div>
+      <div class="demo-badge-right">
+        <button id="btnAddRoverBtn" class="btn-add-rover" type="button">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+          <span id="btnAddRoverBtnText">+ Add your own rover</span>
+        </button>
+      </div>
+    </div>
+
+    <div id="dangerBanner" class="danger-mode-banner">
+      &#x26A0; Danger &mdash; High Gas Level Detected
+    </div>
+
+    <!-- PRIMARY OPERATOR COCKPIT: Side-by-Side 2-Column One-Screen Layout -->
+    <div class="cc-hero-cockpit-2col">
+      
+      <!-- LEFT COLUMN: Live Rover Camera + Safety Monitor -->
+      <div class="cockpit-left-panel">
+        
+        <!-- Live Camera Stream Viewport -->
+        <div class="cc-operate-card camera-card">
+          <div class="cc-card-header-compact">
+            <div>
+              <span class="cc-card-label">Visual Reconnaissance</span>
+              <h2 class="cc-card-title-compact">Live Camera Feed</h2>
+            </div>
+            <div style="display: flex; gap: 6px;">
+              <button id="btnCam1Reload" class="btn btn-secondary btn-sm" type="button" title="Reload Feed">Reload</button>
+              <button id="btnCam1Fullscreen" class="btn btn-secondary btn-sm" type="button" title="Fullscreen">Expand</button>
+            </div>
+          </div>
+
+          <div class="camera-stream-viewport" id="cam1Viewport">
+            <div class="camera-status-strip">
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <span id="cam1StatusDot" class="status-dot online"></span>
+                <span id="cam1StatusLabel" style="font-family: var(--font-mono); font-size: 0.6875rem; font-weight: 700; color: #FAF9F6;">● FRONT CAMERA OPTICAL FEED</span>
+              </div>
+              <span style="font-family: var(--font-mono); font-size: 0.6875rem; color: #A4A7A0;">1080p @ 30 FPS</span>
+            </div>
+
+            <div class="camera-canvas-wrap">
+              <img id="cameraFeedImg" class="camera-feed-img" src="/assets/rover-camera-feed.jpg" alt="ARGUS Live Camera Feed">
+            </div>
+
+            <div class="camera-tab-bar">
+              <button id="btnFrontCam" class="cam-tab active" type="button">Front Camera</button>
+              <button id="btnRearCam" class="cam-tab" type="button">Rear Camera</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Environmental Safety Monitor (Compact Strip) -->
+        <div class="cc-operate-card safety-card-compact">
+          <div class="gas-compact-row">
+            <div>
+              <span class="cc-card-label" style="margin-bottom:0; color: var(--accent-gold);">Hazard Sensor Monitor</span>
+              <div id="gasPpmLarge" class="gas-ppm-compact">245 ppm</div>
+            </div>
+            <div id="gasStatePill" class="gas-state-pill safe">
+              <span>&#x25CF;</span> <span>Safe</span>
+            </div>
+            <div class="gas-tiles-compact">
+              <span class="compact-tile-item">ADC: <strong id="gasRawVal">11820</strong></span>
+              <span class="compact-tile-item">Peak: <strong id="gasPeakVal">245 ppm</strong> <button id="btnResetPeak" class="btn btn-secondary btn-xs" type="button" style="padding: 1px 4px; font-size: 0.55rem;">Reset</button></span>
+              <span class="compact-tile-item">Alarm: <strong id="alarmPinVal">Clear</strong></span>
+              <span class="compact-tile-item">State: <strong id="sensorStatusVal" style="color: var(--status-normal);">Ready</strong></span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT COLUMN: Primary Rover Control Cockpit (HERO CONTROLLER) -->
+      <div class="dpad-hero-card cockpit-right-panel" id="driveCard">
+        <div class="cc-card-header-compact" style="display: flex; justify-content: space-between; align-items: flex-start;">
+          <div>
+            <span class="cc-card-label">Primary Teleoperation</span>
+            <h2 class="cc-card-title-compact">Rover Control</h2>
+          </div>
+          <div id="autoModeNotice" class="auto-mode-overlay-notice" style="margin-bottom:0; padding: 4px 10px;">
+            <strong>Autonomous Active</strong>
+          </div>
+        </div>
+
+        <!-- Prominent High-Contrast D-Pad with Emergency STOP -->
+        <div class="dpad-container" id="dpadContainer">
+          <div></div>
+          <button id="btnForward" class="dpad-btn" data-cmd="F" title="Forward (W / Up)" type="button">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <polyline points="18 15 12 9 6 15"></polyline>
+            </svg>
+            <span>FORWARD</span>
+          </button>
+          <div></div>
+
+          <button id="btnLeft" class="dpad-btn" data-cmd="L" title="Left (A / Left)" type="button">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+            <span>LEFT</span>
+          </button>
+
+          <button id="btnStop" class="dpad-btn stop-btn" data-cmd="S" title="Emergency Stop (Space)" type="button">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+              <rect x="5" y="5" width="14" height="14" rx="2"></rect>
+            </svg>
+            <span>EMERGENCY STOP</span>
+          </button>
+
+          <button id="btnRight" class="dpad-btn" data-cmd="R" title="Right (D / Right)" type="button">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+            <span>RIGHT</span>
+          </button>
+
+          <div></div>
+          <button id="btnReverse" class="dpad-btn" data-cmd="B" title="Reverse (S / Down)" type="button">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+            <span>REVERSE</span>
+          </button>
+          <div></div>
+        </div>
+
+        <!-- Speed Slider & Driving Meta -->
+        <div class="speed-control-group-compact">
+          <div class="speed-meta">
+            <span style="color: var(--text-muted); font-weight: 600;">Speed Control</span>
+            <span style="color: var(--text-primary); font-weight: 700;">Speed: <strong id="speedValue">180</strong> PWM (~1.2 m/s)</span>
+          </div>
+          <input type="range" id="speedSlider" min="60" max="255" value="180" step="1" class="speed-range-input" aria-label="PWM Motor Speed">
+          <div class="speed-ticks">
+            <span>60 (Min)</span>
+            <span>180 (Default)</span>
+            <span>255 (Max)</span>
+          </div>
+        </div>
+
+        <!-- Clean 1-Line Keyboard Guide -->
+        <div class="keyboard-guide-line">
+          &uarr; Forward &bull; &darr; Reverse &bull; &larr; Left &bull; &rarr; Right &bull; Space Emergency Stop
+        </div>
+      </div>
+
+    </div>
+
+    <!-- =====================================================================
+         BELOW THE FOLD / SECONDARY OPERATOR SYSTEMS (SCROLLABLE)
+         ===================================================================== -->
+    <div class="cc-secondary-systems-grid">
+      
+      <!-- 1. Map / Navigation Panel -->
+      <div class="sys-card">
+        <div class="sys-card-header">
+          <span class="sys-card-title">Map / Navigation</span>
+          <span class="sys-status-badge">GPS Tracking Active</span>
+        </div>
+        <div class="map-container-wrap">
+          <div id="argusMap" class="real-leaflet-map"></div>
+          <button id="btnLocateRover" class="btn btn-secondary btn-sm map-locate-btn" type="button">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <circle cx="12" cy="12" r="8"></circle>
+              <line x1="12" y1="2" x2="12" y2="6"></line>
+              <line x1="12" y1="18" x2="12" y2="22"></line>
+              <line x1="2" y1="12" x2="6" y2="12"></line>
+              <line x1="18" y1="12" x2="22" y2="12"></line>
+            </svg>
+            Locate Rover
+          </button>
+        </div>
+        <div class="map-meta-list">
+          <div class="map-meta-item">
+            <span>Current Location:</span>
+            <strong>Sector 04 &bull; Chemical Bay B</strong>
+          </div>
+          <div class="map-meta-item">
+            <span>Coordinates:</span>
+            <strong>28.6139° N, 77.2090° E</strong>
+          </div>
+          <div class="map-meta-item">
+            <span>Target Waypoint:</span>
+            <strong>WP-03 (Valve Assembly)</strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Mission / Waypoints Panel -->
+      <div class="sys-card">
+        <div class="sys-card-header">
+          <span class="sys-card-title">Mission / Waypoints</span>
+          <button class="btn btn-secondary btn-sm" type="button" style="padding: 2px 8px; font-size: 0.6875rem;">Plan Mission</button>
+        </div>
+        <div class="mission-specs-box">
+          <div class="spec-row">
+            <span>Mission Name:</span>
+            <strong>Hazard Zone Inspection #04</strong>
+          </div>
+          <div class="spec-row">
+            <span>Current Waypoint:</span>
+            <strong style="color: var(--accent-gold);">WP-03 (Chemical Bay B)</strong>
+          </div>
+          <div class="spec-row">
+            <span>Pending Waypoints:</span>
+            <span>WP-04, WP-05</span>
+          </div>
+          <div class="spec-row">
+            <span>Mission Status:</span>
+            <strong style="color: var(--status-normal);">En Route</strong>
+          </div>
+        </div>
+        <div class="waypoints-progress-list">
+          <div class="wp-step done">
+            <span class="wp-dot"></span>
+            <span>WP-01: Entry Airlock</span>
+          </div>
+          <div class="wp-step done">
+            <span class="wp-dot"></span>
+            <span>WP-02: Duct Entrance</span>
+          </div>
+          <div class="wp-step active">
+            <span class="wp-dot"></span>
+            <span>WP-03: Chemical Bay B (Current)</span>
+          </div>
+          <div class="wp-step pending">
+            <span class="wp-dot"></span>
+            <span>WP-04: Valve Storage</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. Rover Telemetry & Status -->
+      <div class="sys-card">
+        <div class="sys-card-header">
+          <span class="sys-card-title">Rover Status</span>
+          <span class="sys-status-badge">Active</span>
+        </div>
+        <div class="status-metrics-grid">
+          <div class="stat-box">
+            <span class="stat-label">Command</span>
+            <strong id="statusCommandVal" class="stat-val" style="color: var(--accent-gold);">Stop</strong>
+          </div>
+          <div class="stat-box">
+            <span class="stat-label">Current Speed</span>
+            <strong id="statusSpeedVal" class="stat-val">180</strong>
+          </div>
+          <div class="stat-box">
+            <span class="stat-label">Mode</span>
+            <strong id="statusModeVal" class="stat-val">Manual</strong>
+          </div>
+          <div class="stat-box">
+            <span class="stat-label">Position</span>
+            <span class="stat-val" style="font-size: 0.75rem;">14.2m, 8.7m</span>
+          </div>
+          <div class="stat-box">
+            <span class="stat-label">Tilt / Roll</span>
+            <span class="stat-val">1.2&deg; / 0.4&deg;</span>
+          </div>
+          <div class="stat-box">
+            <span class="stat-label">CPU Load</span>
+            <span class="stat-val">24%</span>
+          </div>
+          <div class="stat-box">
+            <span class="stat-label">Storage</span>
+            <span class="stat-val">18.4 GB</span>
+          </div>
+          <div class="stat-box">
+            <span class="stat-label">Uptime</span>
+            <span class="stat-val">01:42:15</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. AI Detection Panel -->
+      <div class="sys-card">
+        <div class="sys-card-header">
+          <span class="sys-card-title">AI Detection</span>
+          <span class="sys-status-badge">YOLOv8 Active</span>
+        </div>
+        <div class="ai-panel-body">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+            <span style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted);">Objects Detected:</span>
+            <strong id="aiObjectsCount" style="font-family: var(--font-mono); font-size: 0.875rem; color: var(--text-primary);">2</strong>
+          </div>
+          <div id="aiChipsContainer" class="ai-chips-list">
+            <span class="ai-chip">Person (94%)</span>
+            <span class="ai-chip hazard-chip">Oil Spill (88%)</span>
+          </div>
+          <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 14px; line-height: 1.5;">
+            Computer vision assists operators by tagging obstacles and hazardous containers in real time.
+          </p>
+        </div>
+      </div>
+
+      <!-- 5. System Information Panel -->
+      <div class="sys-card" style="grid-column: span 2;">
+        <div class="sys-card-header">
+          <span class="sys-card-title">System Information</span>
+          <span class="sys-status-badge">Hardware Matrix</span>
+        </div>
+        <div class="sys-matrix-grid">
+          <div class="matrix-item">
+            <span class="status-dot online"></span>
+            <div>
+              <strong>ESP32 Microcontroller</strong>
+              <p>Real-Time PWM & Watchdog &bull; 4ms latency</p>
+            </div>
+          </div>
+          <div class="matrix-item">
+            <span class="status-dot online"></span>
+            <div>
+              <strong>ESP32-CAM Streamer</strong>
+              <p>Forward Video Stream &bull; 18ms latency</p>
+            </div>
+          </div>
+          <div class="matrix-item">
+            <span class="status-dot online"></span>
+            <div>
+              <strong>Raspberry Pi 5 Brain</strong>
+              <p>Edge AI & Web Telemetry &bull; 8ms latency</p>
+            </div>
+          </div>
+          <div class="matrix-item">
+            <span class="status-dot online"></span>
+            <div>
+              <strong>TB6612FNG Motor Controller</strong>
+              <p>Dual H-Bridge Motor Driver &bull; Healthy</p>
+            </div>
+          </div>
+          <div class="matrix-item">
+            <span class="status-dot online"></span>
+            <div>
+              <strong>MQ-2 / ADS1115 Gas Sensor</strong>
+              <p>16-bit Delta-Sigma ADC &bull; Ready</p>
+            </div>
+          </div>
+          <div class="matrix-item">
+            <span class="status-dot online"></span>
+            <div>
+              <strong>MPU6050 IMU</strong>
+              <p>6-Axis Gyro & Accelerometer &bull; Calibrated</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Hidden element references for background JS compatibility -->
+    <div style="display: none;" aria-hidden="true">
+      <span id="statusAiVal">2</span>
+    </div>
+
+    <!-- SECONDARY SYSTEM EVENT LOG -->
+    <div class="event-log-card">
+      <div class="event-log-header">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <h2 style="font-family: var(--font-display); font-size: 1rem; font-weight: 700; color: var(--text-primary);">Event Log</h2>
+          <span style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted);">&bull; Real-time Audit Trail</span>
+        </div>
+        <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+          <button id="btnDownloadCsv" class="btn btn-secondary btn-sm" type="button">Download Log (CSV)</button>
+        </div>
+      </div>
+
+      <div id="eventLogViewport" class="event-log-viewport"></div>
+    </div>
+
+  </main>
+
+  <!-- Redesigned Premium Dark Industrial Footer -->
+  <footer class="site-footer-dark">
+    <div class="container">
+      <div class="footer-dark-grid">
+        
+        <!-- Column 1: Brand & Socials -->
+        <div class="footer-dark-col brand-col">
+          <div class="footer-brand-title">ARGUS</div>
+          <div class="footer-brand-tagline">The Autonomous Eye For Hazardous Spaces</div>
+          <p class="footer-brand-desc">
+            Robotic intelligence for a safer, more resilient world. Engineered to safeguard human personnel in high-risk industrial facilities.
+          </p>
+          <div class="footer-social-links">
+            <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="social-icon-btn" aria-label="GitHub">
+              <svg viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+            </a>
+            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="social-icon-btn" aria-label="LinkedIn">
+              <svg viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+            </a>
+            <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" class="social-icon-btn" aria-label="YouTube">
+              <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+            </a>
+            <a href="https://x.com" target="_blank" rel="noopener noreferrer" class="social-icon-btn" aria-label="X">
+              <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Column 2: Quick Links -->
+        <div class="footer-dark-col">
+          <div class="footer-col-title">Quick Links</div>
+          <ul class="footer-dark-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/tech.html">Technology</a></li>
+            <li><a href="/about.html">About</a></li>
+            <li><a href="/control.html">Control Center</a></li>
+            <li><a href="/about.html#contact">Contact</a></li>
+          </ul>
+        </div>
+
+        <!-- Column 3: Solutions -->
+        <div class="footer-dark-col solutions-col">
+          <div class="footer-col-title">Solutions</div>
+          <ul class="footer-dark-links">
+            <li><a href="/tech.html">Hazardous Environment</a></li>
+            <li><a href="/index.html#how-it-works">Industrial Inspection</a></li>
+            <li><a href="/about.html">Search & Rescue</a></li>
+            <li><a href="/tech.html">Remote Exploration</a></li>
+          </ul>
+        </div>
+
+        <!-- Column 4: Resources -->
+        <div class="footer-dark-col">
+          <div class="footer-col-title">Resources</div>
+          <ul class="footer-dark-links">
+            <li><a href="/tech.html">Documentation</a></li>
+            <li><a href="/about.html">Case Studies</a></li>
+            <li><a href="/tech.html">Technology</a></li>
+            <li><a href="/about.html#contact">Contact</a></li>
+          </ul>
+        </div>
+
+        <!-- Column 5: Stay Updated -->
+        <div class="footer-dark-col">
+          <div class="footer-col-title">Stay Updated</div>
+          <p class="footer-subscribe-desc">
+            Follow ARGUS as we build safer ways to operate in hazardous environments.
+          </p>
+          <form class="footer-subscribe-form" onsubmit="event.preventDefault(); alert('Thank you for subscribing to ARGUS updates!');">
+            <input type="email" class="footer-email-input" placeholder="Enter your email" required aria-label="Email address for updates">
+            <button type="submit" class="footer-subscribe-btn" aria-label="Subscribe">&rarr;</button>
+          </form>
+        </div>
+
+      </div>
+
+      <!-- Bottom Bar -->
+      <div class="footer-dark-bottom">
+        <div>&copy; 2026 ARGUS Robotics &bull; Smart India Hackathon. All rights reserved.</div>
+        <div class="footer-bottom-links">
+          <a href="/about.html">Privacy Policy</a>
+          <span>&bull;</span>
+          <a href="/about.html">Terms of Use</a>
+          <span>&bull;</span>
+          <a href="/about.html#contact">Contact Support</a>
+        </div>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- Add Your Own Rover Modal Dialog -->
+  <div id="roverConnectModal" class="argus-modal-overlay" aria-hidden="true" style="display: none;">
+    <div class="argus-modal-card" role="dialog" aria-labelledby="modalTitle">
+      <div class="argus-modal-header">
+        <div>
+          <h3 id="modalTitle" class="argus-modal-title">Add your own rover</h3>
+          <p id="modalSubtitle" class="argus-modal-subtitle">Connect ARGUS to a rover on your local network.</p>
+        </div>
+        <button id="modalCloseBtn" class="argus-modal-close" type="button" aria-label="Close modal">&times;</button>
+      </div>
+      
+      <!-- Connection Form State -->
+      <form id="roverConnectForm" onsubmit="return false;">
+        <div class="argus-modal-body">
+          <div id="connectFormFields">
+            <label for="roverIpInput" class="argus-modal-label">Rover local IP address</label>
+            <input type="text" id="roverIpInput" class="argus-modal-input" placeholder="192.168.x.x" autocomplete="off" required>
+            <span class="argus-modal-helper">Example: 192.168.1.100</span>
+          </div>
+
+          <div id="connectedDetailsView" style="display: none;">
+            <div class="modal-info-box">
+              <div class="info-row"><span>Status:</span> <strong style="color: var(--status-normal);">● Rover Connected</strong></div>
+              <div class="info-row"><span>IP Address:</span> <strong id="modalConnectedIpText">192.168.1.100</strong></div>
+              <div class="info-row"><span>Data Stream:</span> <strong style="color: var(--status-normal);">● Live Real-time</strong></div>
+            </div>
+          </div>
+
+          <div id="modalStatusMsg" class="argus-modal-error" style="display: none;"></div>
+        </div>
+        
+        <div class="argus-modal-footer">
+          <button id="modalCancelBtn" class="btn btn-secondary btn-sm" type="button">Cancel</button>
+          <button id="modalDisconnectBtn" class="btn btn-secondary btn-sm" type="button" style="display: none; color: #dc2626; border-color: #dc2626;">Disconnect rover</button>
+          <button id="modalConnectBtn" class="btn btn-primary btn-sm" type="submit">
+            <span id="modalConnectBtnText">Connect rover</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script type="module" src="./js/main.js"></script>
+  <script type="module" src="./js/control.js"></script>
+</body>
+</html>

@@ -1,0 +1,6 @@
+{
+  "name": "ARGUS | Autonomous Surveillance & Hazard Rover",
+  "description": "AI-powered autonomous surveillance and hazard-monitoring rover for hazardous industrial environments, chemical facilities, and warehouses.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
